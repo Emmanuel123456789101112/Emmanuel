@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive - Mis Archivos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="new-styles.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #28262c; color: #f9f5ff; min-height: 100vh; margin: 0; }
+        
+        .drive-header {
+            background: #35323a;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid #413d48;
+        }
+        
+        .drive-header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .drive-header h1 svg { color: #998fc7; }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #998fc7;
+        }
+        
+        .breadcrumb span { cursor: pointer; }
+        .breadcrumb span:hover { color: #d4c2fc; }
+        
+        .drive-toolbar {
+            padding: 12px 24px;
+            display: flex;
+            gap: 12px;
+            border-bottom: 1px solid #413d48;
+        }
+        
+        .drive-btn {
+            background: #413d48;
+            border: none;
+            color: #f9f5ff;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .drive-btn:hover { background: #998fc7; }
+        
+        .drive-btn.primary {
+            background: #998fc7;
+            color: white;
+        }
+        
+        .drive-btn.primary:hover { background: #d4c2fc; }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            padding: 24px;
+        }
+        
+        .file-item {
+            background: #35323a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .file-item:hover {
+            border-color: #998fc7;
+            transform: translateY(-2px);
+        }
+        
+        .file-item.folder { background: #413d48; }
+        
+        .file-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+        }
+        
+        .file-icon svg {
+            width: 100%;
+            height: 100%;
+            color: #998fc7;
+        }
+        
+        .file-icon.folder svg { color: #d4c2fc; }
+        
+        .file-name {
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+        
+        .file-meta {
+            font-size: 0.75rem;
+            color: #998fc7;
+            margin-top: 4px;
+        }
+        
+        .context-menu {
+            position: fixed;
+            background: #35323a;
+            border: 1px solid #413d48;
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 160px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+        }
+        
+        .context-menu.show { display: block; }
+        
+        .context-menu-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .context-menu-item:hover { background: #413d48; }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .modal.show { display: flex; }
+        
+        .modal-content {
+            background: #35323a;
+            padding: 24px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .modal h2 { margin-top: 0; }
+        
+        .modal input {
+            width: 100%;
+            padding: 12px;
+            background: #413d48;
+            border: 1px solid #413d48;
+            border-radius: 8px;
+            color: #f9f5ff;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+        
+        .modal input:focus {
+            outline: none;
+            border-color: #998fc7;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .empty-drive {
+            text-align: center;
+            padding: 60px 20px;
+            color: #998fc7;
+        }
+        
+        .empty-drive svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-drive p { font-size: 1.1rem; margin-bottom: 8px; }
+        .empty-drive span { font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="drive-header">
+        <h1>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Drive
+        </h1>
+        <div class="breadcrumb" id="breadcrumb"></div>
+    </div>
+    
+    <div class="drive-toolbar">
+        <button class="drive-btn primary" onclick="Drive.showNewFolderModal()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                <line x1="12" y1="11" x2="12" y2="17"></line>
+                <line x1="9" y1="14" x2="15" y2="14"></line>
+            </svg>
+            Nueva Carpeta
+        </button>
+        <button class="drive-btn" onclick="Drive.uploadFile()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Subir Archivo
+        </button>
+    </div>
+    
+    <div class="file-grid" id="file-grid"></div>
+    
+    <div class="context-menu" id="context-menu">
+        <div class="context-menu-item" onclick="Drive.openFile()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Abrir
+        </div>
+        <div class="context-menu-item" onclick="Drive.renameFile()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Renombrar
+        </div>
+        <div class="context-menu-item" onclick="Drive.deleteFile()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            Eliminar
+        </div>
+    </div>
+    
+    <div class="modal" id="folder-modal">
+        <div class="modal-content">
+            <h2>Nueva Carpeta</h2>
+            <input type="text" id="folder-name-input" placeholder="Nombre de la carpeta">
+            <div class="modal-buttons">
+                <button class="drive-btn" onclick="Drive.hideModal()">Cancelar</button>
+                <button class="drive-btn primary" onclick="Drive.createFolder()">Crear</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal" id="rename-modal">
+        <div class="modal-content">
+            <h2>Renombrar</h2>
+            <input type="text" id="rename-input" placeholder="Nuevo nombre">
+            <div class="modal-buttons">
+                <button class="drive-btn" onclick="Drive.hideModal()">Cancelar</button>
+                <button class="drive-btn primary" onclick="Drive.saveRename()">Guardar</button>
+            </div>
+        </div>
+    </div>
+    
+    <input type="file" id="file-input" style="display: none;">
+
+    <script src="drive.js"></script>
+</body>
+</html>

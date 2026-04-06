@@ -1,0 +1,693 @@
+/**
+ * new-styles.css - Hoja de estilos principal
+ * 
+ * Paleta de colores (CSS Custom Properties):
+ * - shadow-grey: Fondo principal (#28262c)
+ * - soft-periwinkle: Acento principal (#998fc7)
+ * - periwinkle: Highlights/hover (#d4c2fc)
+ * - lavender-mist: Texto principal (#f9f5ff)
+ * - true-cobalt: Color de destaque (#14248a)
+ * 
+ * Estructura:
+ * 1. Variables CSS (Custom Properties)
+ * 2. Reset y estilos base
+ * 3. Vistas (login, main)
+ * 4. Componentes (navbar, tabs, botones)
+ * 5. Formularios
+ * 6. Listas (tareas, cards)
+ * 7. Estados (vacío, completado)
+ * 8. Responsive (media queries)
+ */
+
+/* ============================================
+   1. VARIABLES CSS (Custom Properties)
+   ============================================ */
+
+:root {
+    /* Colores de la paleta */
+    --shadow-grey: #28262c;
+    --soft-periwinkle: #998fc7;
+    --periwinkle: #d4c2fc;
+    --lavender-mist: #f9f5ff;
+    --true-cobalt: #14248a;
+
+    /* Alias para uso en componentes */
+    --bg-primary: #28262c;      /* Fondo principal de la página */
+    --bg-secondary: #35323a;   /* Fondo de tarjetas/containers */
+    --bg-tertiary: #413d48;     /* Fondo de elementos hover */
+    --bg-input: #413d48;        /* Fondo de inputs */
+    
+    --text-primary: #f9f5ff;   /* Texto principal */
+    --text-secondary: #d4c2fc;  /* Texto secundario */
+    --text-muted: #998fc7;      /* Texto muted/placeholder */
+    
+    --accent: #998fc7;          /* Color de acento principal */
+    --accent-hover: #d4c2fc;    /* Color hover del acento */
+    --accent-subtle: rgba(153, 143, 199, 0.2);  /* Fondo sutil de acento */
+    
+    --success: #d4c2fc;        /* Color de éxito (completado) */
+    --success-subtle: rgba(212, 194, 252, 0.2);
+    
+    --danger: #d4c2fc;         /* Color de peligro/eliminar */
+    --danger-subtle: rgba(212, 194, 252, 0.2);
+    
+    --star-filled: #d4c2fc;     /* Estrella llena */
+    --star-empty: #413d48;     /* Estrella vacía */
+    --border: #413d48;         /* Color de bordes */
+    
+    --radius: 12px;            /* Radio de bordes grande */
+    --radius-sm: 8px;          /* Radio de bordes pequeño */
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);  /* Sombra */
+    --transition: all 0.2s ease; /* Transición por defecto */
+}
+
+/* ============================================
+   2. RESET Y ESTILOS BASE
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+/* Clase utilitaria para ocultar elementos */
+.hidden {
+    display: none !important;
+}
+
+/* ============================================
+   3. VISTAS
+   ============================================ */
+
+/* Vista de login - pantalla completa */
+#login-view {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: 
+        radial-gradient(ellipse at top, rgba(9, 77, 146, 0.3) 0%, transparent 50%),
+        var(--bg-primary);
+}
+
+/* Contenedor del formulario de login */
+.login-container {
+    background: var(--bg-secondary);
+    padding: 48px 40px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    border: 1px solid var(--border);
+}
+
+/* Logo/icono del login */
+.logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: var(--accent-subtle);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+}
+
+/* Título del login */
+.login-container h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* Subtítulo del login */
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+}
+
+/* ============================================
+   4. COMPONENTES
+   ============================================ */
+
+/* Grupo de input */
+.input-group {
+    margin-bottom: 20px;
+}
+
+/* Estilos de inputs */
+.input-group input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+/* Focus de inputs */
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* Placeholder de inputs */
+.input-group input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Estilos base para botones */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Botón primario */
+.btn-primary {
+    background: var(--accent);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Botón de peligro (eliminar) */
+.btn-danger {
+    background: var(--danger-subtle);
+    color: var(--danger);
+    padding: 8px 12px;
+}
+
+.btn-danger:hover {
+    background: var(--danger);
+    color: white;
+}
+
+/* Mensaje de error */
+.error {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-top: 16px;
+    min-height: 20px;
+}
+
+/* Vista principal */
+#main-view {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra de navegación */
+.navbar {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Marca/título del navbar */
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Saludo al usuario */
+.user-greeting {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+/* Contenedor de tabs de navegación */
+.nav-tabs {
+    display: flex;
+    gap: 8px;
+}
+
+/* Tab de navegación */
+.nav-tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-tab:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Tab activo */
+.nav-tab.active {
+    background: var(--accent-subtle);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Botón de logout */
+.btn-logout {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-logout:hover {
+    background: var(--danger-subtle);
+    color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Contenido principal */
+.content {
+    flex: 1;
+    padding: 32px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Módulo (sección dentro de content) */
+.module {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Animación fadeIn para módulos */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Encabezado de módulo */
+.module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.module-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ============================================
+   5. FILTROS Y FORMULARIOS
+   ============================================ */
+
+/* Contenedor de filtros */
+.filters {
+    display: flex;
+    gap: 8px;
+}
+
+/* Botón de filtro */
+.filter-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-btn:hover {
+    background: var(--bg-input);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+/* Formulario para agregar elementos */
+.add-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* Inputs en formularios */
+.add-form input {
+    flex: 1;
+    min-width: 150px;
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.add-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.add-form input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Contenedor de rating por estrellas */
+.rating-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-basis: 100%;
+}
+
+.rating-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Contenedor de estrellas (input) */
+.stars-input {
+    display: flex;
+    gap: 4px;
+}
+
+.stars-input span {
+    font-size: 1.5rem;
+    color: var(--star-empty);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.stars-input span:hover,
+.stars-input span.active {
+    color: var(--star-filled);
+    transform: scale(1.1);
+}
+
+.add-form .btn {
+    flex-shrink: 0;
+}
+
+/* ============================================
+   6. LISTAS
+   ============================================ */
+
+/* Contenedor de lista general */
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Item de tarea */
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.task-item:hover {
+    border-color: var(--accent);
+}
+
+/* Tarea completada */
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* Checkbox de tarea */
+.task-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.task-checkbox:hover {
+    border-color: var(--accent);
+}
+
+.task-checkbox.checked {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+/* Texto de tarea */
+.task-text {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+/* Lista de cards (cursos, libros, proyectos) */
+.list.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+/* Card individual */
+.card-item {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 20px;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.card-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+/* Encabezado de card */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* Título de card */
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Info adicional de card */
+.card-info {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.card-info span {
+    display: block;
+}
+
+.card-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Link en card */
+.card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+.card-link:hover {
+    color: var(--accent-hover);
+    text-decoration: underline;
+}
+
+/* Estrellas en card */
+.card-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.card-stars span {
+    color: var(--star-filled);
+    font-size: 1rem;
+}
+
+.card-stars span.empty {
+    color: var(--star-empty);
+}
+
+/* Acciones del card */
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+/* ============================================
+   7. ESTADOS
+   ============================================ */
+
+/* Estado vacío (sin elementos) */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.empty-state svg {
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-state p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.empty-state span {
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   8. RESPONSIVE
+   ============================================ */
+
+/* Tablet (max-width: 768px) */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+    }
+    
+    .nav-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .module-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .add-form {
+        flex-direction: column;
+    }
+    
+    .list.cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Móvil (max-width: 480px) */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 32px 24px;
+    }
+    
+    .content {
+        padding: 20px 16px;
+    }
+    
+    .nav-tab {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .nav-tab svg {
+        width: 16px;
+        height: 16px;
+    }
+}
